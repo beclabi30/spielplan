@@ -9,8 +9,7 @@ const nowFn = () => (params.get('now') ? new Date(params.get('now')) : new Date(
 
 let data = null;
 let selected = 'all';
-const SHORT = 3; // so viele Termine/Ergebnisse sind sofort sichtbar
-const open = { up: false, tab: false, res: false }; // „Alle anzeigen“ aufgeklappt?
+let pane = null; // 'up' | 'tab' | 'res'; null = automatisch
 try { selected = localStorage.getItem('team') || 'all'; } catch { /* privat oder gesperrt */ }
 
 /* ---------- Helfer ---------- */
@@ -187,49 +186,35 @@ function gameRow(g, kind) {
   return h('li', { class: cls }, date, who, right);
 }
 
-function moreButton(key, total, shown, label) {
-  const btn = document.getElementById(`more-${key}`);
-  if (total <= shown && !open[key]) { btn.hidden = true; return; }
-  btn.hidden = false;
-  btn.textContent = open[key] ? 'Weniger anzeigen' : `Alle ${label} anzeigen (${total})`;
-  btn.setAttribute('aria-expanded', String(open[key]));
+function renderList(id, games, kind, emptyText) {
+  document.getElementById(id).replaceChildren(...(games.length ? games.map(g => gameRow(g, kind)) : [h('li', { class: 'empty-row' }, emptyText)]));
 }
 
-function renderList(key, id, games, kind, emptyText, label) {
-  const shown = open[key] ? games : games.slice(0, SHORT);
-  document.getElementById(id).replaceChildren(...(games.length ? shown.map(g => gameRow(g, kind)) : [h('li', { class: 'empty-row' }, emptyText)]));
-  moreButton(key, games.length, SHORT, label);
-  const c = document.getElementById(`c-${key}`); if (c) c.textContent = games.length ? String(games.length) : '';
-}
-
-/** Kurzansicht: eigenes Team mit direkten Nachbarn; aufgeklappt: ganze Tabelle. */
 function renderTables() {
   const box = document.getElementById('tables');
   box.replaceChildren();
-  let hiddenRows = 0;
   for (const t of visibleTeams()) for (const c of t.competitions) {
     if (!c.standings.length) continue;
-    const me = c.standings.findIndex(s => s.team === t.team);
-    let rows = c.standings;
-    if (!open.tab && me >= 0) {
-      const from = Math.max(0, Math.min(me - 1, c.standings.length - 3));
-      rows = c.standings.slice(from, from + 3);
-    }
-    hiddenRows += c.standings.length - rows.length;
     box.append(h('h3', { class: 'tbl-title' }, h('span', { class: 'chip us' }, t.label), ` ${c.name}`),
       h('table', { class: 'standings' },
         h('thead', {}, h('tr', {}, h('th', { class: 'r', scope: 'col', title: 'Platz' }, '#'), h('th', { class: 't', scope: 'col' }, 'Team'),
           h('th', { scope: 'col', title: 'Spiele' }, 'Sp'), h('th', { scope: 'col', title: 'Siege' }, 'S'), h('th', { scope: 'col', title: 'Niederlagen' }, 'N'),
           h('th', { class: 'sets', scope: 'col' }, 'Sätze'), h('th', { scope: 'col', title: 'Punkte' }, 'Pkt'))),
-        h('tbody', {}, rows.map(s => h('tr', { class: s.team === t.team ? 'us' : null },
+        h('tbody', {}, c.standings.map(s => h('tr', { class: s.team === t.team ? 'us' : null },
           h('td', { class: 'r' }, s.rank), h('td', { class: 't' }, s.team), h('td', {}, s.played ?? '–'), h('td', {}, s.won ?? '–'), h('td', {}, s.lost ?? '–'),
           h('td', { class: 'sets' }, `${s.setsWon ?? '–'}:${s.setsLost ?? '–'}`), h('td', { class: 'pts' }, s.points ?? '–'))))));
   }
   if (!box.children.length) box.append(h('p', { class: 'empty-row' }, 'Noch keine Tabelle veröffentlicht.'));
-  const btn = document.getElementById('more-tab');
-  btn.hidden = !open.tab && hiddenRows === 0;
-  btn.textContent = open.tab ? 'Weniger anzeigen' : 'Ganze Tabelle anzeigen';
-  btn.setAttribute('aria-expanded', String(open.tab));
+}
+
+function renderTabs(hasUpcoming) {
+  const active = pane || (hasUpcoming ? 'up' : 'res');
+  for (const b of document.querySelectorAll('.tabs button')) {
+    const on = b.dataset.pane === active;
+    b.setAttribute('aria-selected', String(on));
+    b.tabIndex = on ? 0 : -1;
+    document.getElementById(`pane-${b.dataset.pane}`).hidden = !on;
+  }
 }
 
 function renderStatus() {
@@ -255,9 +240,10 @@ function render() {
   renderStatus();
   const { upcoming, past } = split(gamesOf(visibleTeams()), now);
   renderNext(upcoming, past, now);
-  renderList('up', 'upcoming', upcoming.slice(1), 'up', upcoming.length ? 'Keine weiteren Termine.' : 'Noch keine Termine eingetragen.', 'Termine');
+  renderList('upcoming', upcoming.slice(1), 'up', upcoming.length ? 'Keine weiteren Termine. Das nächste Spiel steht oben.' : 'Noch keine Termine eingetragen.');
   renderTables();
-  renderList('res', 'results', past, 'past', 'Noch keine Ergebnisse.', 'Ergebnisse');
+  renderList('results', past, 'past', 'Noch keine Ergebnisse.');
+  renderTabs(upcoming.length > 1);
 }
 
 /* ---------- Laden ---------- */
@@ -292,7 +278,7 @@ async function load(manual) {
 
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('refresh').addEventListener('click', () => load(true));
-  for (const b of document.querySelectorAll('.more')) b.addEventListener('click', () => { open[b.dataset.key] = !open[b.dataset.key]; render(); });
+  for (const b of document.querySelectorAll('.tabs button')) b.addEventListener('click', () => { pane = b.dataset.pane; render(); });
   const logo = document.getElementById('club-logo');
   logo.addEventListener('load', () => { logo.hidden = false; });
   logo.addEventListener('error', () => { logo.remove(); });

@@ -1,5 +1,5 @@
 // Offline-Speicher: Seite aus dem Speicher, Daten immer zuerst aus dem Netz.
-const CACHE = 'spielplan-v3';
+const CACHE = 'spielplan-v4';
 const STATIC = ['./', 'index.html', 'styles.css', 'app.js', 'manifest.webmanifest',
   'fonts/barlow-condensed-500.woff2', 'fonts/barlow-condensed-700.woff2',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png', 'icons/club-logo.png'];

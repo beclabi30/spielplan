@@ -40,7 +40,7 @@ body {
 .sky {
   position: fixed; inset: 0; pointer-events: none; z-index: 0;
   background:
-    radial-gradient(60rem 30rem at 85% -10%, rgba(69, 227, 255, .16), transparent 60%),
+    radial-gradient(50rem 30rem at 100% 70%, rgba(69, 227, 255, .10), transparent 60%),
     radial-gradient(50rem 30rem at -10% 25%, rgba(255, 122, 47, .13), transparent 60%),
     linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
 }
@@ -66,8 +66,8 @@ a { color: var(--cyan); }
 .top {
   position: sticky; top: 0; z-index: 5;
   padding: calc(env(safe-area-inset-top) + 12px) 16px 10px;
-  background: rgba(7, 11, 31, .78); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--edge);
+  background: var(--bg);
+  box-shadow: 0 10px 24px -12px rgba(0, 0, 0, .8);
 }
 .top-row, .teams, main, .foot { max-width: 760px; margin-left: auto; margin-right: auto; }
 .top-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
@@ -146,19 +146,11 @@ main { padding: 18px 16px 8px; }
 .quiet .last .score.loss { color: var(--loss); }
 .score small { display: block; font: 500 .74rem/1.2 var(--body); color: var(--muted); text-shadow: none; }
 
-/* Abschnitte */
-.sec { margin-top: 22px; }
-.sec-h { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; font: 700 1.5rem/1 var(--display); letter-spacing: .02em; }
-.sec-h::before { content: ""; width: 4px; height: 1.1em; border-radius: 2px; background: var(--orange); box-shadow: 0 0 10px rgba(255, 122, 47, .7); }
-.count { font: 700 .85rem/1 var(--display); color: var(--muted); border: 1px solid var(--edge); border-radius: 999px; padding: 3px 8px; }
-.count:empty { display: none; }
-.more {
-  width: 100%; min-height: 44px; margin-top: 8px; cursor: pointer; border-radius: 14px;
-  border: 1px dashed rgba(69, 227, 255, .45); background: transparent; color: var(--cyan);
-  font: 700 1.05rem/1 var(--display); letter-spacing: .03em;
-}
-.more:hover { background: rgba(69, 227, 255, .08); }
-.more[hidden] { display: none; }
+/* Reiter */
+.tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; border-radius: 999px; background: var(--panel); border: 1px solid var(--edge); margin-bottom: 12px; }
+.tabs button { min-height: 46px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); cursor: pointer; font: 700 1.12rem/1 var(--display); letter-spacing: .03em; }
+.tabs button[aria-selected="true"] { background: var(--orange); color: #1A0B02; box-shadow: 0 0 18px rgba(255, 122, 47, .45); }
+.pane[hidden] { display: none; }
 
 /* Spiellisten */
 .games { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }

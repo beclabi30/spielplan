@@ -43,22 +43,15 @@
     <div id="alert" class="alert" role="status" hidden></div>
     <section id="next" class="next" aria-label="Nächstes Spiel"></section>
 
-    <section class="sec" aria-labelledby="h-up">
-      <h2 id="h-up" class="sec-h">Termine <span class="count" id="c-up"></span></h2>
-      <ol id="upcoming" class="games"></ol>
-      <button type="button" class="more" id="more-up" data-key="up" hidden></button>
-    </section>
-
-    <section class="sec" aria-labelledby="h-tab">
-      <h2 id="h-tab" class="sec-h">Tabelle</h2>
-      <div id="tables"></div>
-      <button type="button" class="more" id="more-tab" data-key="tab" hidden></button>
-    </section>
-
-    <section class="sec" aria-labelledby="h-res">
-      <h2 id="h-res" class="sec-h">Ergebnisse <span class="count" id="c-res"></span></h2>
-      <ol id="results" class="games"></ol>
-      <button type="button" class="more" id="more-res" data-key="res" hidden></button>
+    <section class="panel-area">
+      <div class="tabs" role="tablist" aria-label="Ansicht">
+        <button type="button" role="tab" id="tab-up" aria-controls="pane-up" data-pane="up">Termine</button>
+        <button type="button" role="tab" id="tab-tab" aria-controls="pane-tab" data-pane="tab">Tabelle</button>
+        <button type="button" role="tab" id="tab-res" aria-controls="pane-res" data-pane="res">Ergebnisse</button>
+      </div>
+      <div id="pane-up" role="tabpanel" aria-labelledby="tab-up" class="pane"><ol id="upcoming" class="games"></ol></div>
+      <div id="pane-tab" role="tabpanel" aria-labelledby="tab-tab" class="pane"><div id="tables"></div></div>
+      <div id="pane-res" role="tabpanel" aria-labelledby="tab-res" class="pane"><ol id="results" class="games"></ol></div>
     </section>
   </main>
 
