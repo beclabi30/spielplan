@@ -1,0 +1,32 @@
+{
+  "source": "https://www.volleyball-wien.at",
+  "hallPage": "hallen/hallenliste.html",
+  "adminUrl": "",
+  "teams": [
+    {
+      "id": "u18",
+      "label": "U18/1",
+      "team": "Döbling 1",
+      "page": "tabellen/nachwuchs-burschen.html",
+      "competition": "u18m",
+      "exclude": ["ÖMS"]
+    },
+    {
+      "id": "u20",
+      "label": "U20/1",
+      "team": "Döbling 1",
+      "page": "tabellen/nachwuchs-burschen.html",
+      "competition": "u20m",
+      "exclude": ["ÖMS"]
+    },
+    {
+      "id": "h3",
+      "label": "Herren/3",
+      "team": "Döbling 3",
+      "page": "tabellen/herren.html",
+      "competition": "Herren",
+      "exclude": []
+    }
+  ],
+  "hallAliases": {}
+}

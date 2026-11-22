@@ -1,0 +1,887 @@
+{
+ "version": 1,
+ "checkedAt": "2026-11-22T10:37:46.806Z",
+ "lastSuccessAt": "2026-11-22T10:37:46.806Z",
+ "status": "ok",
+ "warnings": [],
+ "source": "https://www.volleyball-wien.at",
+ "adminUrl": "",
+ "teams": [
+  {
+   "id": "u18",
+   "label": "U18/1",
+   "team": "Döbling 1",
+   "season": "2026/2027",
+   "competitions": [
+    {
+     "name": "u18m Qualifikation Gruppe A",
+     "season": "2026/2027",
+     "standings": [
+      {
+       "rank": 1,
+       "team": "Döbling 1",
+       "played": 3,
+       "won": 3,
+       "lost": 0,
+       "setsWon": 6,
+       "setsLost": 0,
+       "ballsWon": 150,
+       "ballsLost": 56,
+       "points": 6
+      },
+      {
+       "rank": 2,
+       "team": "Sokol V/2",
+       "played": 2,
+       "won": 2,
+       "lost": 0,
+       "setsWon": 4,
+       "setsLost": 0,
+       "ballsWon": 100,
+       "ballsLost": 27,
+       "points": 4
+      },
+      {
+       "rank": 3,
+       "team": "Fly-turtles 1",
+       "played": 2,
+       "won": 1,
+       "lost": 1,
+       "setsWon": 2,
+       "setsLost": 2,
+       "ballsWon": 80,
+       "ballsLost": 50,
+       "points": 2
+      },
+      {
+       "rank": 4,
+       "team": "Tigers 1",
+       "played": 3,
+       "won": 1,
+       "lost": 2,
+       "setsWon": 2,
+       "setsLost": 4,
+       "ballsWon": 103,
+       "ballsLost": 100,
+       "points": 2
+      },
+      {
+       "rank": 5,
+       "team": "VTR 1",
+       "played": 4,
+       "won": 0,
+       "lost": 4,
+       "setsWon": 0,
+       "setsLost": 8,
+       "ballsWon": 0,
+       "ballsLost": 200,
+       "points": 0
+      }
+     ],
+     "games": [
+      {
+       "nr": "2603",
+       "note": null,
+       "date": "2026-10-10",
+       "time": "15:00",
+       "home": "Tigers 1",
+       "away": "Döbling 1",
+       "played": true,
+       "hall": null,
+       "result": {
+        "sets": "0:2",
+        "balls": "26:50",
+        "setScores": [
+         "11:25",
+         "15:25"
+        ]
+       },
+       "isHome": false,
+       "opponent": "Tigers 1",
+       "changes": []
+      },
+      {
+       "nr": "2604",
+       "note": null,
+       "date": "2026-10-17",
+       "time": "11:30",
+       "home": "Döbling 1",
+       "away": "Fly-turtles 1",
+       "played": true,
+       "hall": null,
+       "result": {
+        "sets": "2:0",
+        "balls": "50:30",
+        "setScores": [
+         "25:12",
+         "25:18"
+        ]
+       },
+       "isHome": true,
+       "opponent": "Fly-turtles 1",
+       "changes": []
+      },
+      {
+       "nr": "Spielverzicht: Döbling 1 - VTR 1",
+       "note": "Spielverzicht",
+       "date": null,
+       "time": null,
+       "home": "Döbling 1",
+       "away": "VTR 1",
+       "played": true,
+       "hall": null,
+       "result": {
+        "sets": "2:0",
+        "balls": "50:0",
+        "setScores": [
+         "25:0",
+         "25:0"
+        ]
+       },
+       "isHome": true,
+       "opponent": "VTR 1",
+       "changes": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "u20",
+   "label": "U20/1",
+   "team": "Döbling 1",
+   "season": "2026/2027",
+   "competitions": [
+    {
+     "name": "u20m Qualifikation Gruppe A",
+     "season": "2026/2027",
+     "standings": [
+      {
+       "rank": 1,
+       "team": "hotvolleys 1",
+       "played": 2,
+       "won": 2,
+       "lost": 0,
+       "setsWon": 4,
+       "setsLost": 0,
+       "ballsWon": 100,
+       "ballsLost": 49,
+       "points": 4
+      },
+      {
+       "rank": 2,
+       "team": "Döbling 1",
+       "played": 3,
+       "won": 2,
+       "lost": 1,
+       "setsWon": 4,
+       "setsLost": 2,
+       "ballsWon": 120,
+       "ballsLost": 93,
+       "points": 4
+      },
+      {
+       "rank": 3,
+       "team": "Simmering 1",
+       "played": 3,
+       "won": 2,
+       "lost": 1,
+       "setsWon": 4,
+       "setsLost": 2,
+       "ballsWon": 129,
+       "ballsLost": 106,
+       "points": 4
+      },
+      {
+       "rank": 4,
+       "team": "Döbling 3",
+       "played": 2,
+       "won": 0,
+       "lost": 2,
+       "setsWon": 0,
+       "setsLost": 4,
+       "ballsWon": 62,
+       "ballsLost": 100,
+       "points": 0
+      },
+      {
+       "rank": 5,
+       "team": "Favoriten 1",
+       "played": 2,
+       "won": 0,
+       "lost": 2,
+       "setsWon": 0,
+       "setsLost": 4,
+       "ballsWon": 37,
+       "ballsLost": 100,
+       "points": 0
+      }
+     ],
+     "games": [
+      {
+       "nr": "2101",
+       "note": null,
+       "date": "2026-10-11",
+       "time": "14:30",
+       "home": "Döbling 1",
+       "away": "Favoriten 1",
+       "played": true,
+       "hall": null,
+       "result": {
+        "sets": "2:0",
+        "balls": "50:17",
+        "setScores": [
+         "25:8",
+         "25:9"
+        ]
+       },
+       "isHome": true,
+       "opponent": "Favoriten 1",
+       "changes": []
+      },
+      {
+       "nr": "2103",
+       "note": null,
+       "date": "2026-10-17",
+       "time": "09:30",
+       "home": "Döbling 3",
+       "away": "Döbling 1",
+       "played": true,
+       "hall": null,
+       "result": {
+        "sets": "0:2",
+        "balls": "26:50",
+        "setScores": [
+         "12:25",
+         "14:25"
+        ]
+       },
+       "isHome": false,
+       "opponent": "Döbling 3",
+       "changes": []
+      },
+      {
+       "nr": "2106",
+       "note": null,
+       "date": "2026-11-14",
+       "time": "09:00",
+       "home": "Döbling 1",
+       "away": "hotvolleys 1",
+       "played": true,
+       "hall": null,
+       "result": {
+        "sets": "0:2",
+        "balls": "20:50",
+        "setScores": [
+         "11:25",
+         "9:25"
+        ]
+       },
+       "isHome": true,
+       "opponent": "hotvolleys 1",
+       "changes": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "h3",
+   "label": "Herren/3",
+   "team": "Döbling 3",
+   "season": "2026/2027",
+   "competitions": [
+    {
+     "name": "Herren Landesliga Grunddurchgang",
+     "season": "2026/2027",
+     "standings": [
+      {
+       "rank": 1,
+       "team": "Döbling 3",
+       "played": 7,
+       "won": 6,
+       "lost": 1,
+       "setsWon": 19,
+       "setsLost": 7,
+       "ballsWon": 596,
+       "ballsLost": 514,
+       "points": 16
+      },
+      {
+       "rank": 2,
+       "team": "VTR 1",
+       "played": 6,
+       "won": 5,
+       "lost": 1,
+       "setsWon": 17,
+       "setsLost": 7,
+       "ballsWon": 556,
+       "ballsLost": 496,
+       "points": 16
+      },
+      {
+       "rank": 3,
+       "team": "Favoriten 1",
+       "played": 6,
+       "won": 5,
+       "lost": 1,
+       "setsWon": 16,
+       "setsLost": 6,
+       "ballsWon": 518,
+       "ballsLost": 439,
+       "points": 14
+      },
+      {
+       "rank": 4,
+       "team": "Nova 1",
+       "played": 6,
+       "won": 3,
+       "lost": 3,
+       "setsWon": 14,
+       "setsLost": 12,
+       "ballsWon": 591,
+       "ballsLost": 547,
+       "points": 11
+      },
+      {
+       "rank": 5,
+       "team": "hotvolleys 2",
+       "played": 6,
+       "won": 2,
+       "lost": 4,
+       "setsWon": 7,
+       "setsLost": 12,
+       "ballsWon": 396,
+       "ballsLost": 420,
+       "points": 6
+      },
+      {
+       "rank": 6,
+       "team": "Döbling 2",
+       "played": 7,
+       "won": 2,
+       "lost": 5,
+       "setsWon": 9,
+       "setsLost": 16,
+       "ballsWon": 524,
+       "ballsLost": 585,
+       "points": 6
+      },
+      {
+       "rank": 7,
+       "team": "Favoriten 2",
+       "played": 6,
+       "won": 1,
+       "lost": 5,
+       "setsWon": 5,
+       "setsLost": 16,
+       "ballsWon": 422,
+       "ballsLost": 513,
+       "points": 3
+      },
+      {
+       "rank": 8,
+       "team": "Sokol V/2",
+       "played": 6,
+       "won": 1,
+       "lost": 5,
+       "setsWon": 5,
+       "setsLost": 16,
+       "ballsWon": 409,
+       "ballsLost": 498,
+       "points": 3
+      }
+     ],
+     "games": [
+      {
+       "nr": "1008",
+       "note": null,
+       "date": "2026-10-11",
+       "time": "18:30",
+       "home": "hotvolleys 2",
+       "away": "Döbling 3",
+       "played": true,
+       "hall": null,
+       "result": {
+        "sets": "0:3",
+        "balls": "48:75",
+        "setScores": [
+         "15:25",
+         "19:25",
+         "14:25"
+        ]
+       },
+       "isHome": false,
+       "opponent": "hotvolleys 2",
+       "changes": []
+      },
+      {
+       "nr": "1010",
+       "note": null,
+       "date": "2026-10-17",
+       "time": "14:00",
+       "home": "Döbling 3",
+       "away": "Sokol V/2",
+       "played": true,
+       "hall": null,
+       "result": {
+        "sets": "3:0",
+        "balls": "77:55",
+        "setScores": [
+         "25:13",
+         "27:25",
+         "25:17"
+        ]
+       },
+       "isHome": true,
+       "opponent": "Sokol V/2",
+       "changes": []
+      },
+      {
+       "nr": "1015",
+       "note": null,
+       "date": "2026-10-26",
+       "time": "19:00",
+       "home": "Favoriten 1",
+       "away": "Döbling 3",
+       "played": true,
+       "hall": null,
+       "result": {
+        "sets": "3:1",
+        "balls": "94:77",
+        "setScores": [
+         "25:21",
+         "25:16",
+         "19:25",
+         "25:15"
+        ]
+       },
+       "isHome": false,
+       "opponent": "Favoriten 1",
+       "changes": []
+      },
+      {
+       "nr": "1017",
+       "note": null,
+       "date": "2026-10-31",
+       "time": "19:30",
+       "home": "Döbling 3",
+       "away": "Döbling 2",
+       "played": true,
+       "hall": null,
+       "result": {
+        "sets": "3:0",
+        "balls": "77:58",
+        "setScores": [
+         "27:25",
+         "25:12",
+         "25:21"
+        ]
+       },
+       "isHome": true,
+       "opponent": "Döbling 2",
+       "changes": []
+      },
+      {
+       "nr": "1019",
+       "note": null,
+       "date": "2026-11-01",
+       "time": "12:00",
+       "home": "Favoriten 2",
+       "away": "Döbling 3",
+       "played": true,
+       "hall": null,
+       "result": {
+        "sets": "0:3",
+        "balls": "55:76",
+        "setScores": [
+         "17:25",
+         "24:26",
+         "14:25"
+        ]
+       },
+       "isHome": false,
+       "opponent": "Favoriten 2",
+       "changes": []
+      },
+      {
+       "nr": "1022",
+       "note": null,
+       "date": "2026-11-14",
+       "time": "11:00",
+       "home": "Döbling 3",
+       "away": "VTR 1",
+       "played": true,
+       "hall": null,
+       "result": {
+        "sets": "3:2",
+        "balls": "107:98",
+        "setScores": [
+         "20:25",
+         "22:25",
+         "25:21",
+         "25:18",
+         "15:9"
+        ]
+       },
+       "isHome": true,
+       "opponent": "VTR 1",
+       "changes": []
+      },
+      {
+       "nr": "1023",
+       "note": null,
+       "date": "2026-11-21",
+       "time": "09:00",
+       "home": "Döbling 3",
+       "away": "Nova 1",
+       "played": true,
+       "hall": null,
+       "result": {
+        "sets": "3:2",
+        "balls": "107:106",
+        "setScores": [
+         "25:22",
+         "22:25",
+         "25:21",
+         "20:25",
+         "15:13"
+        ]
+       },
+       "isHome": true,
+       "opponent": "Nova 1",
+       "changes": []
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "halls": [
+  {
+   "name": "alte Posthalle",
+   "short": "Roggendorf",
+   "address": "Roggendorfgasse 2, 1170 Wien"
+  },
+  {
+   "name": "Ballsportgymnasium",
+   "short": "BSG III",
+   "address": "Erdbergstraße 186-190/2.OG, 1030 Wien"
+  },
+  {
+   "name": "Berufschule Hütteldorferstraße",
+   "short": "Hütteldorf",
+   "address": "Hütteldorferstraße 7-17, 1150 Wien"
+  },
+  {
+   "name": "Berufsschule Donizettiweg",
+   "short": "Donizetti",
+   "address": "Donizettiweg 31, 1220 Wien"
+  },
+  {
+   "name": "BG/BRG II Sigmund Freud",
+   "short": "Wohlmut",
+   "address": "Wohlmutstraße 3, 1020 Wien"
+  },
+  {
+   "name": "BG/BRG XVII Geblergasse",
+   "short": "Gebler",
+   "address": "Geblergasse 56, 1170 Wien"
+  },
+  {
+   "name": "BG/BRG XVII Geblergasse",
+   "short": "GRG17",
+   "address": "Geblergasse 56, 1170 Wien"
+  },
+  {
+   "name": "BG/BRG XVII Parhamerplatz Billa",
+   "short": "Billa Plus Halle Parhamer",
+   "address": "Geblergasse 80 - Eingang vis a vis , 1170 Wien"
+  },
+  {
+   "name": "BG/BRG XVII Parhamerplatz Merkurhalle",
+   "short": "Merkurhalle",
+   "address": "Geblergasse/Frauengasse, 1170 Wien"
+  },
+  {
+   "name": "BG/BRG XXI Franklinstraße",
+   "short": "Franklin21",
+   "address": "Franklinstraße 21, 1210 Wien"
+  },
+  {
+   "name": "Bildungscampus Deutschordenstraße",
+   "short": "Deutschorden",
+   "address": "Deutschordenstraße 4, 1140 Wien"
+  },
+  {
+   "name": "Bildungscampus Friesgasse",
+   "short": "Fries",
+   "address": "Freisgasse 4, 1150 Wien"
+  },
+  {
+   "name": "Bildungscampus Innerfavoriten",
+   "short": "LG30",
+   "address": "Landgutgasse 30, 1100 Wien"
+  },
+  {
+   "name": "Goethe Gymnasium, Astgasse",
+   "short": "Ast",
+   "address": "Astgasse 3, 1140 Wien"
+  },
+  {
+   "name": "Graphische, Leyserstr 6, 1140 Wien",
+   "short": "Leyser",
+   "address": "Leyserstr 6, 1140 Wien"
+  },
+  {
+   "name": "Komenskyschule",
+   "short": "Sebastian",
+   "address": "Sebastianplatz 3, 1030 Wien"
+  },
+  {
+   "name": "MS Langobardenstraße",
+   "short": "MS Lang",
+   "address": "Langobardenstraße 135, 1220 Wien"
+  },
+  {
+   "name": "MS Staudingergasse",
+   "short": "Staudinger",
+   "address": "Staudingergasse 6, 1200 Wien"
+  },
+  {
+   "name": "NMS Grundsteingasse",
+   "short": "GSTG 48",
+   "address": "Grundsteingasse 48-56, 1160 Wien"
+  },
+  {
+   "name": "NMS Koppstraße",
+   "short": "Kopp",
+   "address": "Koppstraße 110, 1160 Wien"
+  },
+  {
+   "name": "NMS Spallartgasse",
+   "short": "Spallart",
+   "address": "Spallartgasse 18, 1140 Wien"
+  },
+  {
+   "name": "ONMS Absberggasse",
+   "short": "Absberg",
+   "address": "Absberggasse 50, 1100 Wien"
+  },
+  {
+   "name": "Rundhalle Atzgersdorf",
+   "short": "Steiner",
+   "address": "Steinergasse 22, 1230 Wien"
+  },
+  {
+   "name": "Rundhalle Kagran",
+   "short": "Steigentesch",
+   "address": "Steigenteschgasse 1, 1220 Wien"
+  },
+  {
+   "name": "Rundhalle Per Albin Hansson-Siedlung Ost",
+   "short": "PAHO",
+   "address": "Jura Soyfer-Gasse 3, 1100 Wien"
+  },
+  {
+   "name": "Rundhalle Rennbahnsiedlung",
+   "short": "Liebl",
+   "address": "Lieblgasse 4a, 1220 Wien"
+  },
+  {
+   "name": "Rundhalle Simmering",
+   "short": "Simmering",
+   "address": "Florian Hedorfer-Straße 24, 1110 Wien"
+  },
+  {
+   "name": "Rundhalle Wohnpark Alt-Erlaa",
+   "short": "AE",
+   "address": "Anton Baumgartner-Straße 44, 1230 Wien"
+  },
+  {
+   "name": "SMS XXII Kaisermühlen",
+   "short": "Kaisermühlen",
+   "address": "Am Kaisermühlendamm 2, 1220 Wien"
+  },
+  {
+   "name": "Sokolhalle",
+   "short": "Angeli",
+   "address": "Angeligasse 21, 1100 Wien"
+  },
+  {
+   "name": "Sport Arena Wien",
+   "short": "SAW",
+   "address": "Stephanie-Endres-Straße 3, 1020 Wien"
+  },
+  {
+   "name": "Sport&Fun-Halle Donaustadt",
+   "short": "S&F Stadlau",
+   "address": "Erzherzog Karl-Straße 108, 1220 Wien"
+  },
+  {
+   "name": "Sporthalle Brigittenau",
+   "short": "Hopsa",
+   "address": "Hopsagasse 7, 1200 Wien"
+  },
+  {
+   "name": "Sporthalle Fünfhaus",
+   "short": "Tell",
+   "address": "Tellgasse 3, 1150 Wien"
+  },
+  {
+   "name": "Sporthalle Großfeldsiedlung",
+   "short": "Pastor",
+   "address": "Pastorstraße 29, 1210 Wien"
+  },
+  {
+   "name": "Sporthalle Jedlesee - Dominik Hofmann-Halle",
+   "short": "DHH",
+   "address": "Jedleseer Straße 66-76, 1210 Wien"
+  },
+  {
+   "name": "SPZ Nord",
+   "short": "Herchenhahn",
+   "address": "Herchenhahngasse 6, 1210 Wien"
+  },
+  {
+   "name": "Torricelligasse",
+   "short": "VST",
+   "address": "Torricelligasse 50, 1140 Wien"
+  },
+  {
+   "name": "Union-SZ Hietzing",
+   "short": "Altgasse",
+   "address": "Altgasse 6, 1130 Wien"
+  },
+  {
+   "name": "VS Campus Gertrude Fröhlich-Sandner",
+   "short": "VSGFS",
+   "address": "Ernst Melichior Gasse 9, 1020 Wien"
+  },
+  {
+   "name": "VS Czerninplatz",
+   "short": "Czernin",
+   "address": "Czerninplatz 3, 1020 Wien"
+  },
+  {
+   "name": "VS Diesterweggasse",
+   "short": "Diesterweg",
+   "address": "Diesterweggasse 30, 1140 Wien"
+  },
+  {
+   "name": "VS Donaucity",
+   "short": "Donaucity",
+   "address": "Leonard Bernstein-Straße 2, 1220 Wien"
+  },
+  {
+   "name": "VS Dr. Bruno Kreisky",
+   "short": "Bruno-Kreisky",
+   "address": "Svetelskystraße 4-6, 1110 Wien"
+  },
+  {
+   "name": "VS Dreyhausenstraße",
+   "short": "Dreyhausen",
+   "address": "Dreyhausenstraße 21, 1140 Wien"
+  },
+  {
+   "name": "VS Engerthstraße",
+   "short": "Engerth",
+   "address": "Durchlaufstraße 23, 1200 Wien"
+  },
+  {
+   "name": "VS Erlaaer Schleife",
+   "short": "VSES",
+   "address": "Erilaweg 3, 1230 Wien"
+  },
+  {
+   "name": "VS Gaullachergasse",
+   "short": "Gaullacher",
+   "address": "Gaullachergasse 49, 1160 Wien"
+  },
+  {
+   "name": "VS Georg Bilgeri-Straße",
+   "short": "G.Bilgeri",
+   "address": "Georg Bilgeri-Straße 13, 1220 Wien"
+  },
+  {
+   "name": "VS Grinzingerstraße",
+   "short": "Grinze",
+   "address": "Grinzingerstraße 88, 1190 Wien"
+  },
+  {
+   "name": "VS Hoefftgasse",
+   "short": "Hoefftgasse",
+   "address": "Hoefftgasse 7, 1110 Wien"
+  },
+  {
+   "name": "VS Knollgasse",
+   "short": "Knoll",
+   "address": "Knollgasse 4, 1170 Wien"
+  },
+  {
+   "name": "VS Pernerstorfergasse",
+   "short": "P 43",
+   "address": "Pernerstorfergasse 43, 1100 Wien"
+  },
+  {
+   "name": "VS Prandaugasse",
+   "short": "Prandau",
+   "address": "Prandaugasse 5, 1220 Wien"
+  },
+  {
+   "name": "VS Prinzgasse",
+   "short": "VSPG",
+   "address": "Prinzgasse 3, 1220 Wien"
+  },
+  {
+   "name": "VS Robert Blum-Gasse",
+   "short": "R.Blum",
+   "address": "Robert Blum-Gasse 2, 1200 Wien"
+  },
+  {
+   "name": "VS Schönngasse",
+   "short": "Schönn",
+   "address": "Schönngasse 2-4, 1020 Wien"
+  },
+  {
+   "name": "VS Spielmanngasse",
+   "short": "Spielmann",
+   "address": "Spielmanngasse 1, 1200 Wien"
+  },
+  {
+   "name": "VS Stadion",
+   "short": "Stadion",
+   "address": "Vorgartenstraße 208, 1020 Wien"
+  },
+  {
+   "name": "VS Steinlechnergasse",
+   "short": "SLG",
+   "address": "Steinlechnergasse 5-7, 1130 Wien"
+  },
+  {
+   "name": "VS Tesarekplatz",
+   "short": "VS Tes",
+   "address": "Tesarekplatz 4, 1100 Wien"
+  },
+  {
+   "name": "VS Treustraße",
+   "short": "Brig66",
+   "address": "Brigittenauerlände 66, 1200 Wien"
+  },
+  {
+   "name": "VS Wehlistraße",
+   "short": "Wehli",
+   "address": "Wehlistraße 178, 1020 Wien"
+  },
+  {
+   "name": "VS Zehdengasse",
+   "short": "Zehden",
+   "address": "Zehdengasse 9, 1210 Wien"
+  },
+  {
+   "name": "WU Wien",
+   "short": "WUW",
+   "address": "Trabrennstraße 3, 1020 Wien"
+  }
+ ]
+}

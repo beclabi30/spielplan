@@ -1,0 +1,49 @@
+name: Spielplan aktualisieren
+
+on:
+  schedule:
+    - cron: "17 */3 * * *"   # etwa alle 3 Stunden (GitHub kann sich etwas verspäten)
+  workflow_dispatch: {}       # Knopf „Run workflow“ = sofort bei der Quelle neu abfragen
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - id: pages
+        uses: actions/configure-pages@v5
+      - name: Letzten veröffentlichten Stand holen
+        run: curl -fsS "${{ steps.pages.outputs.base_url }}/data.json" -o prev.json || echo "Noch kein alter Stand."
+      - name: Tests
+        run: node --test tests/scraper.test.mjs
+      - name: Daten von volleyball-wien.at holen
+        env:
+          ADMIN_URL: https://github.com/${{ github.repository }}/actions/workflows/update.yml
+        run: node scraper/update.mjs --prev prev.json --out site/data.json
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
