@@ -178,7 +178,6 @@ function renderCards(now) {
       h('div', { class: 'card-head' }, h('span', { class: 'card-name' }, t.label), h('div', { class: 'form', 'aria-label': 'Letzte Spiele, links das älteste' }, form)),
       h('div', { class: 'card-comp' }, comp ? `${comp.name} ${comp.season || ''}` : 'Kein Bewerb'),
       h('div', { class: 'card-stats' },
-        h('div', { class: 'card-rank led' }, row ? `${row.rank}.` : '–', h('small', {}, row ? `Platz von ${comp.standings.length}` : 'Platz')),
         h('div', { class: 'card-pts led' }, row ? row.points : '–', h('small', {}, 'Punkte')),
         h('div', { class: 'card-pts led' }, row ? `${row.won}:${row.lost}` : '–', h('small', {}, 'Bilanz'))),
       h('div', { class: 'card-next' }, nxt ? ['Nächstes: ', h('b', {}, nxt.start ? `${fDayShort.format(nxt.start)}, ${nxt.time || ''}` : 'Termin offen'), ` ${nxt.isHome ? 'gegen' : 'bei'} ${nxt.opponent}`] : 'Noch kein neuer Termin'));
