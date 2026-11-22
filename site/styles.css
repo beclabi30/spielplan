@@ -144,24 +144,6 @@ main { padding: 18px 16px 8px; }
 .quiet .last .score.loss { color: var(--loss); }
 .score small { display: block; font: 500 .74rem/1.2 var(--body); color: var(--muted); text-shadow: none; }
 
-/* Team-Kacheln */
-.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; margin-bottom: 18px; }
-.card { padding: 14px; display: grid; gap: 8px; cursor: pointer; text-align: left; color: inherit; font: inherit; }
-.card:hover { border-color: rgba(69, 227, 255, .45); }
-.card-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-.card-name { font: 700 1.35rem/1 var(--display); letter-spacing: .02em; }
-.card-comp { font-size: .78rem; color: var(--muted); line-height: 1.25; }
-.card-stats { display: flex; align-items: baseline; gap: 14px; }
-.card-rank { font-size: 2.4rem; line-height: .9; color: var(--orange); }
-.card-rank small, .card-pts small { display: block; white-space: nowrap; font: 500 .75rem/1.2 var(--body); color: var(--muted); text-shadow: none; }
-.card-pts { font-size: 1.6rem; line-height: .9; color: var(--ink); }
-.form { display: flex; gap: 5px; align-items: center; }
-.dot { width: 11px; height: 11px; border-radius: 50%; }
-.dot.w { background: var(--win); box-shadow: 0 0 8px var(--win); }
-.dot.l { background: var(--loss); box-shadow: 0 0 8px var(--loss); }
-.card-next { font-size: .84rem; color: var(--muted); }
-.card-next b { color: var(--cyan); font-weight: 600; }
-
 /* Reiter */
 .tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; border-radius: 999px; background: var(--panel); border: 1px solid var(--edge); margin-bottom: 12px; }
 .tabs button { min-height: 42px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); cursor: pointer; font: 700 1.08rem/1 var(--display); letter-spacing: .03em; }
@@ -212,3 +194,4 @@ main { padding: 18px 16px 8px; }
 @media (prefers-reduced-motion: reduce) {
   .next > *, .refresh[aria-busy="true"] svg { animation: none; }
 }
+.quiet .last-date { font-size: .84rem; color: var(--muted); margin-top: 2px; }

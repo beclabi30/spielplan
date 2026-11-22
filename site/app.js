@@ -140,7 +140,7 @@ function renderNext(upcoming, past, now) {
       h('p', {}, 'Sobald der Verband neue Termine einträgt, stehen sie hier.'),
       last ? h('div', { class: 'last' },
         h('div', {}, h('span', { class: 'chip us' }, last.teamLabel), ' ', h('span', { class: 'muted' }, 'Zuletzt: '),
-          `${last.isHome ? 'gegen' : 'bei'} ${last.opponent}`, h('div', { class: 'card-next' }, last.start ? fDayShort.format(last.start) : last.note || '')),
+          `${last.isHome ? 'gegen' : 'bei'} ${last.opponent}`, h('div', { class: 'last-date' }, last.start ? fDayShort.format(last.start) : last.note || '')),
         scoreBox(last)) : null));
     return;
   }
@@ -161,29 +161,6 @@ function renderNext(upcoming, past, now) {
     h('div', { class: 'board-foot' },
       h('div', {}, h('p', { class: 'hall' }, hall.name), h('p', { class: 'addr' }, hall.address || 'Adresse noch offen'), h('p', { class: 'addr' }, g.comp)),
       hall.address ? h('a', { class: 'route', href: mapsUrl(hall.address), target: '_blank', rel: 'noopener noreferrer' }, 'Route planen') : null)));
-}
-
-function renderCards(now) {
-  const box = document.getElementById('cards');
-  box.replaceChildren(...visibleTeams().map(t => {
-    const comp = t.competitions[0];
-    const row = comp && comp.standings.find(s => s.team === t.team);
-    const { upcoming, past } = split(gamesOf([t]), now);
-    const form = past.filter(g => g.played).slice(0, 5).reverse().map(g => {
-      const s = ownScore(g);
-      return h('span', { class: `dot ${s.win ? 'w' : 'l'}`, title: `${s.win ? 'Sieg' : 'Niederlage'} ${s.sets} ${g.isHome ? 'gegen' : 'bei'} ${g.opponent}` });
-    });
-    const nxt = upcoming[0];
-    const card = h('button', { type: 'button', class: 'glass card', 'aria-label': `${t.label} anzeigen` },
-      h('div', { class: 'card-head' }, h('span', { class: 'card-name' }, t.label), h('div', { class: 'form', 'aria-label': 'Letzte Spiele, links das älteste' }, form)),
-      h('div', { class: 'card-comp' }, comp ? `${comp.name} ${comp.season || ''}` : 'Kein Bewerb'),
-      h('div', { class: 'card-stats' },
-        h('div', { class: 'card-pts led' }, row ? row.points : '–', h('small', {}, 'Punkte')),
-        h('div', { class: 'card-pts led' }, row ? `${row.won}:${row.lost}` : '–', h('small', {}, 'Bilanz'))),
-      h('div', { class: 'card-next' }, nxt ? ['Nächstes: ', h('b', {}, nxt.start ? `${fDayShort.format(nxt.start)}, ${nxt.time || ''}` : 'Termin offen'), ` ${nxt.isHome ? 'gegen' : 'bei'} ${nxt.opponent}`] : 'Noch kein neuer Termin'));
-    card.addEventListener('click', () => setTeam(t.id));
-    return card;
-  }));
 }
 
 function gameRow(g, kind) {
@@ -263,7 +240,6 @@ function render() {
   renderStatus();
   const { upcoming, past } = split(gamesOf(visibleTeams()), now);
   renderNext(upcoming, past, now);
-  renderCards(now);
   renderList('upcoming', upcoming.slice(1), 'up', upcoming.length ? 'Keine weiteren Termine.' : 'Noch keine Termine eingetragen.');
   renderTables();
   renderList('results', past, 'past', 'Noch keine Ergebnisse.');
