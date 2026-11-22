@@ -40,11 +40,14 @@ with sync_playwright() as p:
                 check("Gerade kein Spiel angesetzt" in body, f"{tag} leerer Hinweis, weil echt kein Spiel angesetzt")
                 check(pg.locator("tr.us").count() == 3, f"{tag} eigenes Team in 3 Tabellen hervorgehoben")
                 check("Sieg" in body and "Niederlage" in body, f"{tag} Ergebnisse mit Sieg/Niederlage")
-                check("Spielverzicht" in body.replace("­", ""), f"{tag} Spielverzicht angezeigt")
+                check(pg.locator("#results li").count() == 3, f"{tag} kurz: 3 Ergebnisse sichtbar")
+                pg.click("#more-res"); body = pg.inner_text("body")
+                check(pg.locator("#results li").count() == 13 and "Spielverzicht" in body.replace("­", ""), f"{tag} alle Ergebnisse aufklappbar, Spielverzicht dabei")
+                check(pg.locator("#tables tbody tr").count() == 9, f"{tag} kurze Tabellen: je 3 Zeilen")
+                pg.click("#more-tab"); check(pg.locator("#tables tbody tr").count() == 18, f"{tag} ganze Tabellen aufklappbar")
                 check(pg.locator(".card").count() == 0, f"{tag} keine Team-Kacheln mehr")
-                pg.click("#tab-tab"); check(pg.is_visible("#pane-tab") and not pg.is_visible("#pane-res"), f"{tag} Reiter wechseln")
                 pg.click("#seg button[data-id=h3]")
-                check(pg.locator("tr.us").count() == 1 and "U18/1:" not in pg.inner_text("#tables"), f"{tag} Filter Herren/3 wirkt")
+                check(pg.locator("tr.us").count() == 1 and "u18m" not in pg.inner_text("#tables"), f"{tag} Filter Herren/3 wirkt")
                 pg.reload(); pg.wait_for_load_state("networkidle")
                 check(pg.get_attribute("#seg button[data-id=h3]", "aria-selected") == "true", f"{tag} Teamauswahl bleibt gemerkt")
             if case == "upcoming":
@@ -63,8 +66,7 @@ with sync_playwright() as p:
                 check(pg.is_visible("#alert") and "nicht gelesen werden" in al and "Letzter vollständiger Stand" in al, f"{tag} Warnung sichtbar")
                 check(pg.locator("tr.us").count() == 3, f"{tag} alter Stand bleibt sichtbar")
             if case == "empty":
-                pg.click("#tab-tab"); t1 = pg.inner_text("#pane-tab")
-                pg.click("#tab-res"); t2 = pg.inner_text("#pane-res")
+                t1 = pg.inner_text("#tables"); t2 = pg.inner_text("#results")
                 check("Gerade kein Spiel angesetzt" in body and "Noch keine Tabelle" in t1 and "Noch keine Ergebnisse" in t2, f"{tag} leere Zustände")
             pg.context.close()
 

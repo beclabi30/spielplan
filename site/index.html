@@ -6,7 +6,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; font-src 'self'; manifest-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
   <meta name="referrer" content="no-referrer">
   <meta name="robots" content="noindex, nofollow">
-  <title>Spielplan Döbling</title>
+  <title>VV Döbling Spielplan</title>
   <meta name="description" content="Nächste Spiele, Hallen, Tabellen und Ergebnisse von U18/1, U20/1 und Herren/3.">
   <meta name="theme-color" content="#070B1F">
   <meta name="color-scheme" content="dark">
@@ -23,9 +23,12 @@
   <div class="sky" aria-hidden="true"></div>
   <header class="top">
     <div class="top-row">
-      <div>
-        <h1 class="brand">Spielplan <span>Döbling</span></h1>
-        <p class="stamp" id="stamp" aria-live="polite">Lädt …</p>
+      <div class="crest">
+        <img id="club-logo" class="club-logo" src="icons/club-logo.png" alt="" width="52" height="52" hidden>
+        <div>
+          <h1 class="brand"><span class="vv">VV</span> Döbling</h1>
+          <p class="stamp" id="stamp" aria-live="polite">Lädt …</p>
+        </div>
       </div>
       <button type="button" class="refresh" id="refresh" aria-label="Jetzt aktualisieren" title="Jetzt aktualisieren">
         <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20"><path d="M20 12a8 8 0 1 1-2.34-5.66M20 4v5h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -40,15 +43,22 @@
     <div id="alert" class="alert" role="status" hidden></div>
     <section id="next" class="next" aria-label="Nächstes Spiel"></section>
 
-    <section class="panel-area">
-      <div class="tabs" role="tablist" aria-label="Ansicht">
-        <button type="button" role="tab" id="tab-up" aria-controls="pane-up" data-pane="up">Termine</button>
-        <button type="button" role="tab" id="tab-tab" aria-controls="pane-tab" data-pane="tab">Tabelle</button>
-        <button type="button" role="tab" id="tab-res" aria-controls="pane-res" data-pane="res">Ergebnisse</button>
-      </div>
-      <div id="pane-up" role="tabpanel" aria-labelledby="tab-up" class="pane"><ol id="upcoming" class="games"></ol></div>
-      <div id="pane-tab" role="tabpanel" aria-labelledby="tab-tab" class="pane"><div id="tables"></div></div>
-      <div id="pane-res" role="tabpanel" aria-labelledby="tab-res" class="pane"><ol id="results" class="games"></ol></div>
+    <section class="sec" aria-labelledby="h-up">
+      <h2 id="h-up" class="sec-h">Termine <span class="count" id="c-up"></span></h2>
+      <ol id="upcoming" class="games"></ol>
+      <button type="button" class="more" id="more-up" data-key="up" hidden></button>
+    </section>
+
+    <section class="sec" aria-labelledby="h-tab">
+      <h2 id="h-tab" class="sec-h">Tabelle</h2>
+      <div id="tables"></div>
+      <button type="button" class="more" id="more-tab" data-key="tab" hidden></button>
+    </section>
+
+    <section class="sec" aria-labelledby="h-res">
+      <h2 id="h-res" class="sec-h">Ergebnisse <span class="count" id="c-res"></span></h2>
+      <ol id="results" class="games"></ol>
+      <button type="button" class="more" id="more-res" data-key="res" hidden></button>
     </section>
   </main>
 
