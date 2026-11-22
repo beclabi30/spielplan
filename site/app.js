@@ -9,9 +9,10 @@ const nowFn = () => (params.get('now') ? new Date(params.get('now')) : new Date(
 
 let data = null;
 let selected = 'all';
+let pane = null; // 'up' | 'tab' | 'res'; null = automatisch
 try { selected = localStorage.getItem('team') || 'all'; } catch { /* privat oder gesperrt */ }
 
-/* ---------- kleine Helfer ---------- */
+/* ---------- Helfer ---------- */
 function h(tag, attrs = {}, ...kids) {
   const el = document.createElement(tag);
   for (const [k, v] of Object.entries(attrs)) {
@@ -40,17 +41,16 @@ function viennaToDate(isoDate, time) {
   return new Date(ts);
 }
 
-const fmt = (opts) => new Intl.DateTimeFormat('de-AT', { timeZone: TZ, ...opts });
+const fmt = opts => new Intl.DateTimeFormat('de-AT', { timeZone: TZ, ...opts });
 const fDayLong = fmt({ weekday: 'long', day: 'numeric', month: 'long' });
 const fDayShort = fmt({ weekday: 'short', day: 'numeric', month: 'numeric' });
 const fStamp = fmt({ weekday: 'short', day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit' });
+const fKey = fmt({ year: 'numeric', month: '2-digit', day: '2-digit' });
 
 function relDays(start, now) {
-  const dayKey = d => fmt({ year: 'numeric', month: '2-digit', day: '2-digit' }).format(d);
-  const a = viennaToDate(dayKey(now).split('.').reverse().join('-'), '12:00');
-  const b = viennaToDate(dayKey(start).split('.').reverse().join('-'), '12:00');
-  const n = Math.round((b - a) / 86400000);
   if (start <= now) return 'läuft gerade';
+  const noon = d => viennaToDate(fKey.format(d).split('.').reverse().join('-'), '12:00');
+  const n = Math.round((noon(start) - noon(now)) / 86400000);
   if (n === 0) return 'heute';
   if (n === 1) return 'morgen';
   return `in ${n} Tagen`;
@@ -68,12 +68,10 @@ function ownScore(g) {
 }
 
 /* ---------- Daten aufbereiten ---------- */
-function allGames() {
+function gamesOf(teams) {
   const out = [];
-  for (const t of data.teams) {
-    if (selected !== 'all' && t.id !== selected) continue;
-    for (const c of t.competitions) for (const g of c.games) out.push({ ...g, teamLabel: t.label, teamName: t.team, comp: c.name, start: viennaToDate(g.date, g.time) });
-  }
+  for (const t of teams) for (const c of t.competitions) for (const g of c.games)
+    out.push({ ...g, teamId: t.id, teamLabel: t.label, teamName: t.team, comp: c.name, start: viennaToDate(g.date, g.time) });
   return out;
 }
 
@@ -90,21 +88,24 @@ function split(games, now) {
   return { upcoming, past };
 }
 
+const visibleTeams = () => data.teams.filter(t => selected === 'all' || t.id === selected);
+
+function setTeam(id) {
+  selected = id;
+  try { localStorage.setItem('team', selected); } catch { /* egal */ }
+  render();
+}
+
 /* ---------- Darstellung ---------- */
 function renderSeg() {
   const seg = document.getElementById('seg');
-  seg.replaceChildren();
   const opts = [{ id: 'all', label: 'Alle' }, ...data.teams.map(t => ({ id: t.id, label: t.label }))];
   if (!opts.some(o => o.id === selected)) selected = 'all';
-  for (const o of opts) {
+  seg.replaceChildren(...opts.map(o => {
     const b = h('button', { type: 'button', role: 'tab', 'aria-selected': String(o.id === selected), 'data-id': o.id }, o.label);
-    b.addEventListener('click', () => {
-      selected = o.id;
-      try { localStorage.setItem('team', selected); } catch { /* egal */ }
-      render();
-    });
-    seg.append(b);
-  }
+    b.addEventListener('click', () => setTeam(o.id));
+    return b;
+  }));
 }
 
 function changeNote(g) {
@@ -123,90 +124,126 @@ function hallBits(g) {
   return { name: g.hall.name || g.hall.raw, address: g.hall.address };
 }
 
-function renderNext(upcoming, now) {
+function scoreBox(g) {
+  const s = ownScore(g);
+  if (!s) return h('div', { class: 'score' }, h('small', {}, 'Ergebnis noch offen'));
+  return h('div', { class: `score led${s.win ? '' : ' loss'}` }, s.sets, h('small', {}, s.win ? 'Sieg' : 'Niederlage'));
+}
+
+function renderNext(upcoming, past, now) {
   const box = document.getElementById('next');
-  box.replaceChildren();
   const g = upcoming.find(x => x.start) || upcoming[0];
   if (!g) {
-    box.append(
-      h('div', { class: 'court empty', 'aria-hidden': 'true' }, h('div', { class: 'half left' }), h('div', { class: 'half right' }), h('div', { class: 'net' })),
-      h('div', { class: 'empty-text' },
-        h('h2', { id: 'next-h' }, 'Noch kein Spiel angesetzt'),
-        h('p', {}, 'Sobald der Verband die nächsten Termine einträgt, stehen sie hier. Die Seite prüft das automatisch.')));
+    const last = past.find(x => x.played);
+    box.replaceChildren(h('div', { class: 'glass quiet' },
+      h('h2', {}, 'Gerade kein Spiel angesetzt'),
+      h('p', {}, 'Sobald der Verband neue Termine einträgt, stehen sie hier.'),
+      last ? h('div', { class: 'last' },
+        h('div', {}, h('span', { class: 'chip us' }, last.teamLabel), ' ', h('span', { class: 'muted' }, 'Zuletzt: '),
+          `${last.isHome ? 'gegen' : 'bei'} ${last.opponent}`, h('div', { class: 'card-next' }, last.start ? fDayShort.format(last.start) : last.note || '')),
+        scoreBox(last)) : null));
     return;
   }
-  const us = g.teamName, them = g.opponent;
-  const [left, right] = g.isHome ? [us, them] : [them, us];
+  const [left, right] = g.isHome ? [g.teamName, g.opponent] : [g.opponent, g.teamName];
   const hall = hallBits(g);
-  const when = g.start
-    ? h('p', { class: 'when' }, h('span', { class: 'day' }, fDayLong.format(g.start)),
-        h('span', { class: 'time' }, g.time || 'Uhrzeit offen', h('span', { class: 'rel' }, relDays(g.start, now))))
-    : h('p', { class: 'when' }, h('span', { class: 'time' }, 'Termin noch offen'));
-  box.append(
-    h('h2', { id: 'next-h', class: 'visually-hidden' }, 'Nächstes Spiel'),
-    when,
+  box.replaceChildren(h('article', { class: 'glass board' },
+    h('div', { class: 'board-head' },
+      h('p', { class: 'board-title' }, h('span', { class: 'chip us' }, g.teamLabel), ` ${g.isHome ? 'Heimspiel' : 'Auswärtsspiel'}`),
+      g.start ? h('span', { class: 'board-rel' }, relDays(g.start, now)) : null),
+    g.start
+      ? h('p', { class: 'board-when' }, h('span', { class: 'time led' }, g.time || '--:--'), h('span', { class: 'day' }, fDayLong.format(g.start)))
+      : h('p', { class: 'board-when' }, h('span', { class: 'day' }, 'Termin noch offen')),
     h('div', { class: 'court', role: 'img', 'aria-label': `${g.home} gegen ${g.away}` },
       h('div', { class: `half left${g.isHome ? ' us' : ''}` }, h('span', { class: 'side' }, 'Heim'), h('span', { class: 'name' }, left)),
       h('div', { class: `half right${g.isHome ? '' : ' us'}` }, h('span', { class: 'side' }, 'Gast'), h('span', { class: 'name' }, right)),
       h('div', { class: 'net' })),
-    h('div', { class: 'where' },
-      h('p', { class: 'meta' }, h('span', { class: 'tag' }, g.teamLabel), `${g.isHome ? 'Heimspiel' : 'Auswärtsspiel'}, ${g.comp}`),
-      changeNote(g),
-      h('div', {}, h('p', { class: 'hall' }, hall.name), h('p', { class: 'addr' }, hall.address || 'Adresse noch offen')),
-      hall.address ? h('a', { class: 'route', href: mapsUrl(hall.address), target: '_blank', rel: 'noopener noreferrer' }, 'Route planen') : null));
+    changeNote(g),
+    h('div', { class: 'board-foot' },
+      h('div', {}, h('p', { class: 'hall' }, hall.name), h('p', { class: 'addr' }, hall.address || 'Adresse noch offen'), h('p', { class: 'addr' }, g.comp)),
+      hall.address ? h('a', { class: 'route', href: mapsUrl(hall.address), target: '_blank', rel: 'noopener noreferrer' }, 'Route planen') : null)));
+}
+
+function renderCards(now) {
+  const box = document.getElementById('cards');
+  box.replaceChildren(...visibleTeams().map(t => {
+    const comp = t.competitions[0];
+    const row = comp && comp.standings.find(s => s.team === t.team);
+    const { upcoming, past } = split(gamesOf([t]), now);
+    const form = past.filter(g => g.played).slice(0, 5).reverse().map(g => {
+      const s = ownScore(g);
+      return h('span', { class: `dot ${s.win ? 'w' : 'l'}`, title: `${s.win ? 'Sieg' : 'Niederlage'} ${s.sets} ${g.isHome ? 'gegen' : 'bei'} ${g.opponent}` });
+    });
+    const nxt = upcoming[0];
+    const card = h('button', { type: 'button', class: 'glass card', 'aria-label': `${t.label} anzeigen` },
+      h('div', { class: 'card-head' }, h('span', { class: 'card-name' }, t.label), h('div', { class: 'form', 'aria-label': 'Letzte Spiele, links das älteste' }, form)),
+      h('div', { class: 'card-comp' }, comp ? `${comp.name} ${comp.season || ''}` : 'Kein Bewerb'),
+      h('div', { class: 'card-stats' },
+        h('div', { class: 'card-rank led' }, row ? `${row.rank}.` : '–', h('small', {}, row ? `Platz von ${comp.standings.length}` : 'Platz')),
+        h('div', { class: 'card-pts led' }, row ? row.points : '–', h('small', {}, 'Punkte')),
+        h('div', { class: 'card-pts led' }, row ? `${row.won}:${row.lost}` : '–', h('small', {}, 'Bilanz'))),
+      h('div', { class: 'card-next' }, nxt ? ['Nächstes: ', h('b', {}, nxt.start ? `${fDayShort.format(nxt.start)}, ${nxt.time || ''}` : 'Termin offen'), ` ${nxt.isHome ? 'gegen' : 'bei'} ${nxt.opponent}`] : 'Noch kein neuer Termin'));
+    card.addEventListener('click', () => setTeam(t.id));
+    return card;
+  }));
 }
 
 function gameRow(g, kind) {
   const showTeam = selected === 'all';
   const date = g.start
     ? h('div', { class: 'date' }, fDayShort.format(g.start), h('small', {}, g.time || 'Zeit offen'))
-    : h('div', { class: 'date note' }, g.note || 'Termin offen');
+    : h('div', { class: 'date note' }, (g.note || 'Termin offen').replace('Spielverzicht', 'Spiel­verzicht'));
   const who = h('div', {},
-    h('div', { class: 'who' }, showTeam ? h('span', { class: 'tag' }, g.teamLabel) : null,
-      h('span', { class: 'vs' }, g.isHome ? 'gegen ' : 'bei '), g.opponent));
-  let cls = 'game', right = h('div', {});
+    h('div', { class: 'who' }, showTeam ? h('span', { class: 'chip' }, g.teamLabel) : null,
+      h('span', {}, h('span', { class: 'vs' }, g.isHome ? 'gegen ' : 'bei '), g.opponent)));
+  let cls = 'game', right = null;
   if (kind === 'up') {
     const hall = hallBits(g);
     who.append(h('div', { class: 'sub' }, `${g.isHome ? 'Heim' : 'Auswärts'}, `,
       hall.address ? h('a', { href: mapsUrl(hall.address), target: '_blank', rel: 'noopener noreferrer' }, hall.name) : `${hall.name}, Adresse noch offen`));
-    const c = changeNote(g); if (c) who.append(h('div', { class: 'sub' }, c));
+    const c = changeNote(g); if (c) who.append(h('div', {}, c));
+    right = h('div', {});
   } else {
     const s = ownScore(g);
-    if (s) { cls += s.win ? ' win' : ' loss'; right = h('div', { class: 'score' }, s.sets, h('small', {}, s.win ? 'Sieg' : 'Niederlage')); who.append(h('div', { class: 'sub' }, s.setScores.join(', '))); }
-    else right = h('div', { class: 'score' }, h('small', {}, 'Ergebnis noch offen'));
+    if (s) { cls += s.win ? ' win' : ' loss'; who.append(h('div', { class: 'sub' }, s.setScores.join('  '))); }
+    right = scoreBox(g);
   }
   return h('li', { class: cls }, date, who, right);
 }
 
 function renderList(id, games, kind, emptyText) {
-  const ol = document.getElementById(id);
-  ol.replaceChildren(...(games.length ? games.map(g => gameRow(g, kind)) : [h('li', { class: 'empty-row' }, emptyText)]));
+  document.getElementById(id).replaceChildren(...(games.length ? games.map(g => gameRow(g, kind)) : [h('li', { class: 'empty-row' }, emptyText)]));
 }
 
 function renderTables() {
   const box = document.getElementById('tables');
   box.replaceChildren();
-  for (const t of data.teams) {
-    if (selected !== 'all' && t.id !== selected) continue;
-    for (const c of t.competitions) {
-      if (!c.standings.length) continue;
-      box.append(h('h3', {}, `${t.label}: ${c.name} ${c.season || ''}`.trim()),
-        h('table', { class: 'standings' },
-          h('thead', {}, h('tr', {}, h('th', { class: 'r', scope: 'col', title: 'Platz' }, '#'), h('th', { class: 't', scope: 'col' }, 'Team'),
-            h('th', { scope: 'col', title: 'Spiele' }, 'Sp'), h('th', { scope: 'col', title: 'Siege' }, 'S'), h('th', { scope: 'col', title: 'Niederlagen' }, 'N'),
-            h('th', { class: 'sets', scope: 'col' }, 'Sätze'), h('th', { scope: 'col', title: 'Punkte' }, 'Pkt'))),
-          h('tbody', {}, c.standings.map(s => h('tr', { class: s.team === t.team ? 'us' : null },
-            h('td', { class: 'r' }, s.rank), h('td', { class: 't' }, s.team), h('td', {}, s.played ?? '–'), h('td', {}, s.won ?? '–'), h('td', {}, s.lost ?? '–'),
-            h('td', { class: 'sets' }, `${s.setsWon ?? '–'}:${s.setsLost ?? '–'}`), h('td', { class: 'pts' }, s.points ?? '–'))))));
-    }
+  for (const t of visibleTeams()) for (const c of t.competitions) {
+    if (!c.standings.length) continue;
+    box.append(h('h3', { class: 'tbl-title' }, `${t.label}: ${c.name}`),
+      h('table', { class: 'standings' },
+        h('thead', {}, h('tr', {}, h('th', { class: 'r', scope: 'col', title: 'Platz' }, '#'), h('th', { class: 't', scope: 'col' }, 'Team'),
+          h('th', { scope: 'col', title: 'Spiele' }, 'Sp'), h('th', { scope: 'col', title: 'Siege' }, 'S'), h('th', { scope: 'col', title: 'Niederlagen' }, 'N'),
+          h('th', { class: 'sets', scope: 'col' }, 'Sätze'), h('th', { scope: 'col', title: 'Punkte' }, 'Pkt'))),
+        h('tbody', {}, c.standings.map(s => h('tr', { class: s.team === t.team ? 'us' : null },
+          h('td', { class: 'r' }, s.rank), h('td', { class: 't' }, s.team), h('td', {}, s.played ?? '–'), h('td', {}, s.won ?? '–'), h('td', {}, s.lost ?? '–'),
+          h('td', { class: 'sets' }, `${s.setsWon ?? '–'}:${s.setsLost ?? '–'}`), h('td', { class: 'pts' }, s.points ?? '–'))))));
   }
   if (!box.children.length) box.append(h('p', { class: 'empty-row' }, 'Noch keine Tabelle veröffentlicht.'));
 }
 
+function renderTabs(hasUpcoming) {
+  const active = pane || (hasUpcoming ? 'up' : 'res');
+  for (const b of document.querySelectorAll('.tabs button')) {
+    const on = b.dataset.pane === active;
+    b.setAttribute('aria-selected', String(on));
+    b.tabIndex = on ? 0 : -1;
+    document.getElementById(`pane-${b.dataset.pane}`).hidden = !on;
+  }
+}
+
 function renderStatus() {
-  const stamp = document.getElementById('stamp');
   const checked = data.checkedAt ? new Date(data.checkedAt) : null;
-  stamp.textContent = checked ? `Zuletzt aktualisiert: ${fStamp.format(checked)}` : 'Stand unbekannt';
+  document.getElementById('stamp').textContent = checked ? `Zuletzt aktualisiert: ${fStamp.format(checked)}` : 'Stand unbekannt';
   const alert = document.getElementById('alert');
   if (data.status !== 'ok' && data.warnings && data.warnings.length) {
     const ok = data.lastSuccessAt ? ` Letzter vollständiger Stand: ${fStamp.format(new Date(data.lastSuccessAt))}.` : '';
@@ -225,11 +262,13 @@ function render() {
   const now = nowFn();
   renderSeg();
   renderStatus();
-  const { upcoming, past } = split(allGames(), now);
-  renderNext(upcoming, now);
+  const { upcoming, past } = split(gamesOf(visibleTeams()), now);
+  renderNext(upcoming, past, now);
+  renderCards(now);
   renderList('upcoming', upcoming.slice(1), 'up', upcoming.length ? 'Keine weiteren Termine.' : 'Noch keine Termine eingetragen.');
   renderTables();
   renderList('results', past, 'past', 'Noch keine Ergebnisse.');
+  renderTabs(upcoming.length > 1);
 }
 
 /* ---------- Laden ---------- */
@@ -264,6 +303,7 @@ async function load(manual) {
 
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('refresh').addEventListener('click', () => load(true));
+  for (const b of document.querySelectorAll('.tabs button')) b.addEventListener('click', () => { pane = b.dataset.pane; render(); });
   load(false);
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') load(false); });
   if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});

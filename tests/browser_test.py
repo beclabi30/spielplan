@@ -37,10 +37,12 @@ with sync_playwright() as p:
             check("Zuletzt aktualisiert" in body, f"{tag} Stand-Anzeige sichtbar")
             check(pg.evaluate("document.documentElement.scrollWidth <= window.innerWidth"), f"{tag} kein seitliches Scrollen")
             if case == "real":
-                check("Noch kein Spiel angesetzt" in body, f"{tag} leerer Hinweis, weil echt kein Spiel angesetzt")
+                check("Gerade kein Spiel angesetzt" in body, f"{tag} leerer Hinweis, weil echt kein Spiel angesetzt")
                 check(pg.locator("tr.us").count() == 3, f"{tag} eigenes Team in 3 Tabellen hervorgehoben")
                 check("Sieg" in body and "Niederlage" in body, f"{tag} Ergebnisse mit Sieg/Niederlage")
-                check("Spielverzicht" in body, f"{tag} Spielverzicht angezeigt")
+                check("Spielverzicht" in body.replace("­", ""), f"{tag} Spielverzicht angezeigt")
+                check(pg.locator(".card").count() == 3 and pg.locator(".dot").count() > 0, f"{tag} drei Team-Kacheln mit Form")
+                pg.click("#tab-tab"); check(pg.is_visible("#pane-tab") and not pg.is_visible("#pane-res"), f"{tag} Reiter wechseln")
                 pg.click("#seg button[data-id=h3]")
                 check(pg.locator("tr.us").count() == 1 and "U18/1:" not in pg.inner_text("#tables"), f"{tag} Filter Herren/3 wirkt")
                 pg.reload(); pg.wait_for_load_state("networkidle")
@@ -61,7 +63,9 @@ with sync_playwright() as p:
                 check(pg.is_visible("#alert") and "nicht gelesen werden" in al and "Letzter vollständiger Stand" in al, f"{tag} Warnung sichtbar")
                 check(pg.locator("tr.us").count() == 3, f"{tag} alter Stand bleibt sichtbar")
             if case == "empty":
-                check("Noch kein Spiel angesetzt" in body and "Noch keine Tabelle" in body and "Noch keine Ergebnisse" in body, f"{tag} leere Zustände")
+                pg.click("#tab-tab"); t1 = pg.inner_text("#pane-tab")
+                pg.click("#tab-res"); t2 = pg.inner_text("#pane-res")
+                check("Gerade kein Spiel angesetzt" in body and "Noch keine Tabelle" in t1 and "Noch keine Ergebnisse" in t2, f"{tag} leere Zustände")
             pg.context.close()
 
     # Quelle bzw. Datendatei gar nicht erreichbar
